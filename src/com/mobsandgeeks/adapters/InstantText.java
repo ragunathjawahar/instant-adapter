@@ -57,7 +57,8 @@ import java.lang.annotation.Target;
 public @interface InstantText {
     public int viewId();
     public int datePatternResId()   default 0;
-    public String datePattern()   default "";
+    public String datePattern()     default "";
     public int formatStringResId()  default 0;
-    public String formatString()  default "";
+    public String formatString()    default "";
+    public boolean html()           default false;
 }

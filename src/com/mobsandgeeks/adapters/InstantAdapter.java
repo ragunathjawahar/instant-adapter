@@ -15,6 +15,7 @@
 package com.mobsandgeeks.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -373,7 +374,8 @@ public class InstantAdapter<T> extends ArrayAdapter<T> {
                 text = returnValue.toString();
             }
         }
-        textView.setText(text);
+
+        textView.setText(instantText.html() ? Html.fromHtml(text) : text);
     }
 
     private String applyDatePattern(final int viewId, final InstantText instantText,

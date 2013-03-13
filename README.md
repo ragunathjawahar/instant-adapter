@@ -21,10 +21,9 @@ class Book {
 }
 ```
 
-**Step 2 - Initialize and set the Instant Adapter to your ListView**
+**Step 2 - Initialize and set an Instant Adapter to your ListView**
 ```java
-InstantAdapter<Book> bookAdapter = new InstantAdapter<Book>(context, R.layout.book_item,
-                Book.class, bookList);
+InstantAdapter<Book> bookAdapter = new InstantAdapter<Book>(context, R.layout.book_item, Book.class, books);
 bookListView.setAdapter(bookAdapter);
 ```
 
