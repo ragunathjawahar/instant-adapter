@@ -1,6 +1,8 @@
 Instant Adapter
 ----------------
-Just like instant coffee, saves 78% of your time on Android's Custom Adapters.
+Just like instant coffee, saves 78%* of your time on Android's Custom Adapters.
+
+<sub>*Based on internal assessments, this information is subjective.</sub>
 
 Quick Start
 -----------
