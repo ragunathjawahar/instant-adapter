@@ -7,14 +7,14 @@ Quick Start
 **Step 1 - Annotate methods in your model**
 ```java
 class Book {
-    É
+    ...
 
-    &#064;InstantText(viewId = R.id.title)
+    @InstantText(viewId = R.id.title)
     public String getTitle() {
          return title;
     }
 
-    &#064;InstantText(viewId = R.id.author, formatString = "Author: %s")
+    @InstantText(viewId = R.id.author, formatString = "Author: %s")
     public String getAuthor() {
          return author;
     }
