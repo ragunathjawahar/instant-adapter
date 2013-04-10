@@ -1,5 +1,3 @@
-[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=ragunathjawahar&url=https://github.com/ragunathjawahar/instant-adapter/&title=Instant Adapter&language=&tags=github&category=software) 
-
 Instant Adapter
 ----------------
 Just like instant coffee, saves 78%* of your time on Android's Custom Adapters.
