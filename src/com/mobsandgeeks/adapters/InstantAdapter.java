@@ -375,7 +375,7 @@ public class InstantAdapter<T> extends ArrayAdapter<T> {
             }
         }
 
-        textView.setText(instantText.html() ? Html.fromHtml(text) : text);
+        textView.setText(instantText.isHtml() ? Html.fromHtml(text) : text);
     }
 
     private String applyDatePattern(final int viewId, final InstantText instantText,

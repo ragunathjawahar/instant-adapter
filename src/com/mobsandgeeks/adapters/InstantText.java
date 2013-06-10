@@ -60,5 +60,5 @@ public @interface InstantText {
     public String datePattern()     default "";
     public int formatStringResId()  default 0;
     public String formatString()    default "";
-    public boolean html()           default false;
+    public boolean isHtml()         default false;
 }
