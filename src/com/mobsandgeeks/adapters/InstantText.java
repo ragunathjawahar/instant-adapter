@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
  *
  * <ol>
  *   <li>Should be {@code public}.</li>
- *   <li>Should have a no-args method signature.</li>
+ *   <li>Should have no-args or a single {@link Context} parameter method signature.</li>
  *   <li>Must have a non-void return type.</li>
  * </ol>
  *
@@ -50,7 +50,6 @@ import java.lang.annotation.Target;
  *
  * @author Ragunath Jawahar <rj@mobsandgeeks.com>
  * @since 0.5
- * @version 0.5
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

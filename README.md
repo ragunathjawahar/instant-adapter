@@ -4,8 +4,8 @@ Just like instant coffee, saves 78%* of your time on Android's Custom Adapters.
 
 <sub>*Based on internal assessments, this information is subjective.</sub>
 
-Quick Start
------------
+Quick Start I - InstantAdapter
+----------------------------
 **Step 1 - Annotate methods in your model**
 ```java
 class Book {
@@ -23,10 +23,37 @@ class Book {
 }
 ```
 
-**Step 2 - Initialize and set an Instant Adapter to your ListView**
+**Step 2 - Initialize and set an InstantAdapter to your ListView**
 ```java
 InstantAdapter<Book> bookAdapter = new InstantAdapter<Book>(context, R.layout.book_item, Book.class, books);
 bookListView.setAdapter(bookAdapter);
+```
+
+Quick Start II - InstantCursorAdapter
+----------------------------
+**Step 1 - Annotate methods in your model**
+
+**Step 2 - Extend InstantCursorAdapter&lt;T&gt;**
+```java
+class BookCursorAdapter extends InstantCursorAdapter<Book> {
+
+    public BookCursorAdapter(Context context, Cursor cursor) {
+        super(context, R.layout.book_item, Book.class, cursor);
+    }
+
+    @Override
+    public Book getInstance(Cursor cursor) {
+        String title = cursor.getString(cursor.getColumnIndex("title"));
+        String author = cursor.getString(cursor.getColumnIndex("author"));
+        return new Book(title, author);
+    }
+}
+```
+
+**Step 3 - Initialize and set an InstantCursorAdapter to your ListView**
+```java
+BookCursorAdapter bookCursorAdapter = new BookCursorAdapter(this, booksCursor);
+bookListView.setAdapter(bookCursorAdapter);
 ```
 
 License
