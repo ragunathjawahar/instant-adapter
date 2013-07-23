@@ -23,7 +23,7 @@ class Book {
 }
 ```
 
-**Step 2 - Initialize and set an InstantAdapter to your ListView**
+**Step 2 - Instantiate and set an InstantAdapter to your ListView**
 ```java
 InstantAdapter<Book> bookAdapter = new InstantAdapter<Book>(context, R.layout.book_item, Book.class, books);
 bookListView.setAdapter(bookAdapter);
@@ -50,7 +50,7 @@ class BookCursorAdapter extends InstantCursorAdapter<Book> {
 }
 ```
 
-**Step 3 - Initialize and set an InstantCursorAdapter to your ListView**
+**Step 3 - Instantiate and set an InstantCursorAdapter to your ListView**
 ```java
 BookCursorAdapter bookCursorAdapter = new BookCursorAdapter(this, booksCursor);
 bookListView.setAdapter(bookCursorAdapter);

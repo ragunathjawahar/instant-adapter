@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -34,9 +35,9 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
- * {@link InstantAdapterCore} does all the heavy lifting behind the scenes for the
- * {@link InstantAdapter} and the {@link InstantCursorAdapter}. We use a HAS-A relationship
- * with the Instant*Adapters rather than a IS-A relationship.
+ * {@link InstantAdapterCore} does all the heavy lifting behind the scenes for
+ * {@link InstantAdapter} and {@link InstantCursorAdapter}. We use composition
+ * instead of inheritance because {@link InstantAdapter} already extends the {@link ArrayAdapter}.
  * 
  * @author Ragunath Jawahar <rj@mobsandgeeks.com>
  * @since 0.6
@@ -301,7 +302,7 @@ class InstantAdapterCore<T> {
 
             // Update view from data
             Class<? extends View> viewType = holder.view.getClass();
-            if (viewType.isAssignableFrom(TextView.class)) {
+            if (TextView.class.isAssignableFrom(viewType)) {
                 updateTextView(holder, returnValue);
             }
 
