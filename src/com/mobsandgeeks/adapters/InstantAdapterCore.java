@@ -16,6 +16,7 @@ package com.mobsandgeeks.adapters;
 
 import android.content.Context;
 import android.text.Html;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -233,7 +234,23 @@ class InstantAdapterCore<T> {
     }
 
     private void findAnnotatedMethods() {
-        Method[] annotatedMethods = mDataType.getDeclaredMethods();
+        Class<?> clazz = mDataType;
+        do {
+            findAnnotatedMethods(clazz);
+            clazz = clazz.getSuperclass();
+        } while (!clazz.equals(Object.class));
+
+        if (DEBUG) {
+            Log.d(LOG_TAG, String.format("Found %d method(s)", mViewIdsAndMetaCache.size()));
+        }
+    }
+
+    private void findAnnotatedMethods(Class<?> clazz) {
+        if (DEBUG) {
+            Log.d(LOG_TAG, "Looking for methods in " + clazz.getName());
+        }
+
+        Method[] annotatedMethods = clazz.getDeclaredMethods();
         for (Method method : annotatedMethods) {
             Annotation[] annotations = method.getAnnotations();
             for (Annotation annotation : annotations) {
