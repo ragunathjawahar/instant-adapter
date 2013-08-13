@@ -62,7 +62,7 @@ class InstantAdapterCore<T> {
     private LayoutInflater mLayoutInflater;
     private Class<?> mDataType;
     private Set<Integer> mAnnotatedViewIds;
-    private SparseArray<Evaluator<T>> mEvaluators;
+    private SparseArray<ViewHandler<T>> mViewHandlers;
 
     // Caches
     private SparseArray<Meta> mViewIdsAndMetaCache;
@@ -95,7 +95,7 @@ class InstantAdapterCore<T> {
         mLayoutResourceId = layoutResourceId;
         mLayoutInflater = LayoutInflater.from(context);
         mDataType = dataType;
-        mEvaluators = new SparseArray<Evaluator<T>>();
+        mViewHandlers = new SparseArray<ViewHandler<T>>();
         mAnnotatedViewIds = new HashSet<Integer>();
         mViewIdsAndMetaCache = new SparseArray<Meta>();
         mDateFormatCache = new SparseArray<SimpleDateFormat>();
@@ -118,7 +118,7 @@ class InstantAdapterCore<T> {
             final T instance, final int position) {
         SparseArray<Holder> holders = (SparseArray<Holder>) view.getTag(mLayoutResourceId);
         updateAnnotatedViews(holders, view, instance, position);
-        executeEvaluators(holders, parent, view, instance, position);
+        executeViewHandlers(holders, parent, view, instance, position);
     }
 
     /**
@@ -139,8 +139,8 @@ class InstantAdapterCore<T> {
             View viewFromLayout = view.findViewById(viewId);
             if (viewFromLayout == null) {
                 String message = String.format("Cannot find View, check the 'viewId' " +
-                        "attribute  on method %s.%s()",
-                            mDataType.getSimpleName(), meta.method.getName());
+                        "attribute on method %s.%s()",
+                            mDataType.getName(), meta.method.getName());
                 throw new IllegalStateException(message);
             }
             holders.append(viewId, new Holder(viewFromLayout, meta));
@@ -152,58 +152,54 @@ class InstantAdapterCore<T> {
     }
 
     /**
-     * Sets an {@link Evaluator} for a given View id.
+     * Sets an {@link ViewHandler} for a given View id.
      * 
      * @param viewId Designated View id.
-     * @param evaluator An Evaluator for the corresponding View.
+     * @param viewHandler A {@link ViewHandler} for the corresponding View.
      * 
      * @throws IllegalArgumentException If evaluator is {@code null}.
      */
-    public void setEvaluator(final int viewId, final Evaluator<T> evaluator) {
-        if (evaluator == null) {
-            throw new IllegalArgumentException("'evaluator' cannot be null.");
+    public void setViewHandler(final int viewId, final ViewHandler<T> viewHandler) {
+        if (viewHandler == null) {
+            throw new IllegalArgumentException("'viewHandler' cannot be null.");
         }
-        mEvaluators.put(viewId, evaluator);
+        mViewHandlers.put(viewId, viewHandler);
     }
 
     /**
-     * Gets the {@link Evaluator} associated with the View id.
+     * Gets the {@link ViewHandler} associated with the View id.
      *
-     * @param viewId The {@link View} id whose {@link Evaluator} we are looking for.
+     * @param viewId The {@link View} id whose {@link ViewHandler} we are looking for.
      *
-     * @return The Evaluator or {@code null} if one does not exist.
+     * @return The {@link ViewHandler} or {@code null} if one does not exist.
      */
-    public Evaluator<T> getEvaluator(final int viewId) {
-        return mEvaluators.get(viewId);
+    public ViewHandler<T> getViewHandler(final int viewId) {
+        return mViewHandlers.get(viewId);
     }
 
     /**
-     * Gets all Evaluators associated with this {@link InstantAdapter}.
+     * Gets all {@link ViewHandler}s associated with this {@link InstantAdapter}.
      * 
-     * @return A {@link SparseArray} containing the all Evaluators.
+     * @return A {@link SparseArray} containing the all {@link ViewHandler}s.
      */
-    public SparseArray<Evaluator<T>> getEvaluators() {
-        return mEvaluators;
+    public SparseArray<ViewHandler<T>> getViewHandlers() {
+        return mViewHandlers;
     }
 
     /**
-     * Remove an {@link Evaluator} associated with the given view id.
+     * Remove a {@link ViewHandler} associated with the given view id.
      * 
-     * @param viewId The View id whose Evaluator has to be removed.
+     * @param viewId The View id whose {@link ViewHandler} has to be removed.
      */
-    public void removeEvaluator(final int viewId) {
-        mEvaluators.remove(viewId);
+    public void removeViewHandler(final int viewId) {
+        mViewHandlers.remove(viewId);
     }
 
     /**
-     * Removes all Evaluators that are associated with this {@link InstantAdapter}.
+     * Removes all {@link ViewHandler}s that are associated with this {@link InstantAdapter}.
      */
-    public void removeAllEvaluators() {
-        int size = mEvaluators.size();
-        for (int i = 0; i < size; i++) {
-            int key = mEvaluators.keyAt(i);
-            mEvaluators.remove(key);
-        }
+    public void removeAllViewHandlers() {
+        mViewHandlers.clear();
     }
 
     /**
@@ -250,8 +246,8 @@ class InstantAdapterCore<T> {
             Log.d(LOG_TAG, "Looking for methods in " + clazz.getName());
         }
 
-        Method[] annotatedMethods = clazz.getDeclaredMethods();
-        for (Method method : annotatedMethods) {
+        Method[] declaredMethods = clazz.getDeclaredMethods();
+        for (Method method : declaredMethods) {
             Annotation[] annotations = method.getAnnotations();
             for (Annotation annotation : annotations) {
                 if (isInstantAnnotation(annotation)) {
@@ -313,7 +309,7 @@ class InstantAdapterCore<T> {
         for (int i = 0; i < nHolders; i++) {
             Holder holder = holders.valueAt(i);
             Meta meta = holder.meta;
-            if (meta == null) continue; // Evaluator-only views will have a null meta
+            if (meta == null) continue; // ViewHandler-only views will have a null meta
 
             Object returnValue = invokeReflectedMethod(meta.method, instance);
 
@@ -324,9 +320,9 @@ class InstantAdapterCore<T> {
             }
 
             // Evaluators for child views
-            Evaluator<T> evaluator = mEvaluators.get(holder.view.getId());
-            if (evaluator != null) {
-                evaluator.evaluate(mAdapter, parent, holder.view, instance, position);
+            ViewHandler<T> viewHandler = mViewHandlers.get(holder.view.getId());
+            if (viewHandler != null) {
+                viewHandler.handleView(mAdapter, parent, holder.view, instance, position);
             }
         }
     }
@@ -419,17 +415,17 @@ class InstantAdapterCore<T> {
         return formatted;
     }
 
-    private void executeEvaluators(final SparseArray<Holder> holders,
+    private void executeViewHandlers(final SparseArray<Holder> holders,
             final View parent, final View view, final T instance, final int position) {
-        int nEvaluators = mEvaluators.size();
-        for (int i = 0; i < nEvaluators; i++) {
-            int viewId = mEvaluators.keyAt(i);
-            Evaluator<T> evaluator = mEvaluators.get(viewId);
+        int nViewHandlers = mViewHandlers.size();
+        for (int i = 0; i < nViewHandlers; i++) {
+            int viewId = mViewHandlers.keyAt(i);
+            ViewHandler<T> viewHandler = mViewHandlers.get(viewId);
 
-            if (evaluator == null) continue;
+            if (viewHandler == null) continue;
 
             if (viewId == mLayoutResourceId) {
-                evaluator.evaluate(mAdapter, parent, view, instance, position);
+                viewHandler.handleView(mAdapter, parent, view, instance, position);
             } else {
                 Holder holder = holders.get(viewId);
                 View viewWithId = null;
@@ -439,7 +435,7 @@ class InstantAdapterCore<T> {
                     viewWithId = view.findViewById(viewId);
                     holders.append(viewId, new Holder(viewWithId, null));
                 }
-                evaluator.evaluate(mAdapter, view, viewWithId, instance, position);
+                viewHandler.handleView(mAdapter, view, viewWithId, instance, position);
             }
         }
     }

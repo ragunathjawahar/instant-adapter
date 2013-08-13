@@ -20,27 +20,27 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 /**
- * Interface that provides a mechanism to customize Views. You can setup one {@link Evaluator}
+ * Interface that provides a mechanism to customize Views. You can setup one {@link ViewHandler}
  * per {@link View}.
  * 
  * @author Ragunath Jawahar <rj@mobsandgeeks.com>
  * @since 0.5
  * 
- * @param <T> The model you will be evaluating for customizing the associated {@link View}.
+ * @param <T> The model you will be using for customizing the associated {@link View}.
  */
-public interface Evaluator<T> {
+public interface ViewHandler<T> {
 
     /**
      * Allows you to make changes to an associated View by supplying the adapter, the View's
      * parent, an instance of the data associated with the position and the position itself.
      * 
-     * @param adapter The adapter to which this {@link Evaluator} is assigned to.
-     * @param parent Parent for the View that is being evaluated. Usually the custom layout
+     * @param adapter The adapter to which this {@link ViewHandler} is assigned to.
+     * @param parent Parent for the View that is being handled. Usually the custom layout
      *          instance for individual views and a {@link ListView} or a {@link GridView}
      *          for the layout.
-     * @param view The {@link View} that is being evaluated.
+     * @param view The {@link View} that has to be handled.
      * @param instance The instance that is associated with the position.
      * @param position Position of the item within the adapter's data set.
      */
-    void evaluate(ListAdapter adapter, View parent, View view, T instance, int position);
+    void handleView(ListAdapter adapter, View parent, View view, T instance, int position);
 }

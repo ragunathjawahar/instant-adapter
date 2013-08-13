@@ -67,13 +67,13 @@ public abstract class InstantCursorAdapter<T> extends CursorAdapter {
     }
 
     /**
-     * Sets an {@link Evaluator} for a View with the given id.
+     * Sets a {@link ViewHandler} for a View with the given id.
      *
-     * @param viewId Id of the view you want to evaluate.
-     * @param evaluator An {@link Evaluator} instance for your view with the given id.
+     * @param viewId Id of the view you want to handle.
+     * @param viewHandler A {@link ViewHandler} instance for your view with the given id.
      */
-    public void setEvaluator(final int viewId, final Evaluator<T> evaluator) {
-        mInstantAdapterCore.setEvaluator(viewId, evaluator);
+    public void setViewHandler(final int viewId, final ViewHandler<T> viewHandler) {
+        mInstantAdapterCore.setViewHandler(viewId, viewHandler);
     }
 
     /**
