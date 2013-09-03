@@ -49,7 +49,6 @@ import java.lang.annotation.Target;
  * </p>
  *
  * @author Ragunath Jawahar <rj@mobsandgeeks.com>
- * @since 0.5
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

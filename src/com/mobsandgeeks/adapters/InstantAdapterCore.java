@@ -41,7 +41,6 @@ import java.util.Set;
  * instead of inheritance because {@link InstantAdapter} already extends the {@link ArrayAdapter}.
  * 
  * @author Ragunath Jawahar <rj@mobsandgeeks.com>
- * @since 0.6
  * 
  * @param <T> The model that is being backed by the {@link InstantAdapter} or
  *          {@link InstantCursorAdapter}.

@@ -28,7 +28,6 @@ import java.util.List;
  * {@link InstantText} annotation.
  * 
  * @author Ragunath Jawahar <rj@mobsandgeeks.com>
- * @since 0.5
  * 
  * @param <T> The model you want to back using the {@link InstantAdapter}.
  */

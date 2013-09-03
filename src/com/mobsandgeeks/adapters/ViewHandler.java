@@ -24,7 +24,6 @@ import android.widget.ListView;
  * per {@link View}.
  * 
  * @author Ragunath Jawahar <rj@mobsandgeeks.com>
- * @since 0.5
  * 
  * @param <T> The model you will be using for customizing the associated {@link View}.
  */
