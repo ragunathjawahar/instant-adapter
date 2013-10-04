@@ -1,3 +1,7 @@
+Notice
+---------
+**Instant Adapter** is now part of an even more awesome [Adapter Kit] project!
+
 Instant Adapter
 ----------------
 Just like instant coffee, saves 78%* of your time on Android's Custom Adapters.
@@ -72,3 +76,5 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
+[Adapter Kit]: https://github.com/mobsandgeeks/adapter-kit
