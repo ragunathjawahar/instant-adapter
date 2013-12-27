@@ -78,3 +78,7 @@ License
     limitations under the License.
 
 [Adapter Kit]: https://github.com/mobsandgeeks/adapter-kit
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ragunathjawahar/instant-adapter/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
